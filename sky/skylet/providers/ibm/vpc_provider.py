@@ -693,8 +693,8 @@ class ClusterCleaner:
             }
 
             res = requests.post(
-                self.cf_namespaces_url, headers=self.get_headers(), json=data
-            ).json()
+                self.cf_namespaces_url, headers=self.get_headers(), json=data, 
+            timeout=60).json()
             if res.status_code != 200:
                 logger.error(res.text)
             namespace_id = res["id"]
@@ -709,7 +709,7 @@ class ClusterCleaner:
             res = requests.get(
                 f"{self.cf_namespaces_url}?limit=200&offset={offset}",
                 headers=self.get_headers(),
-            )
+            timeout=60)
             return json.loads(res.text)
 
         def _get_cloud_function_namespaces():
@@ -779,7 +779,7 @@ class ClusterCleaner:
         res = requests.get(
             f"{self.cf_namespaces_url}/{namespace_id}/actions?limit=200",
             headers=self.get_headers(),
-        )
+        timeout=60)
         return json.loads(res.text)
 
     def create_action(self, namespace_id):
@@ -793,7 +793,7 @@ class ClusterCleaner:
             f"{self.cf_namespaces_url}/{namespace_id}/actions/{self.action_name}?blocking=true&overwrite=true",
             headers=self.get_headers(),
             data=json.dumps(function_params),
-        )
+        timeout=60)
         if res.status_code != 200:
             logger.error(res.text)
         return json.loads(res.text)
@@ -804,7 +804,7 @@ class ClusterCleaner:
         res = requests.delete(
             f"{self.cf_namespaces_url}/{namespace_id}/actions/{self.action_name}?blocking=true",
             headers=self.get_headers(),
-        )
+        timeout=60)
         if res.status_code != 200:
             logger.warn(res.text)
         return json.loads(res.text)
@@ -821,7 +821,7 @@ class ClusterCleaner:
             f"{self.cf_namespaces_url}/{namespace_id}/actions/{self.action_name}?blocking=true",
             headers=self.get_headers(),
             data=json.dumps(payload),
-        )
+        timeout=60)
         if res.status_code != 200:
             logger.error(res.text)
         return json.loads(res.text)
