@@ -18,8 +18,7 @@ def clone_project():
         subprocess.run(
             'git clone https://github.com/rwightman/pytorch-image-models {}'.
             format(PROJECT_DIR),
-            shell=True,
-            check=True)
+            shell=False, check=True)
 
 
 clone_project()

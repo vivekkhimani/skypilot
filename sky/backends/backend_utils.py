@@ -273,8 +273,7 @@ def _optimize_file_mounts(yaml_path: str) -> None:
         # !r to add quotes for paths containing spaces.
         subprocess.run(
             f'cp -r {full_local_src!r} {local_runtime_files_dir}/{unique_name}',
-            shell=True,
-            check=True)
+            shell=False, check=True)
 
     common_utils.dump_yaml(yaml_path, yaml_config)
 
@@ -301,7 +300,7 @@ def path_size_megabytes(path: str) -> int:
                      f'{git_exclude_filter} --dry-run {path!r}')
     rsync_output = ''
     try:
-        rsync_output = str(subprocess.check_output(rsync_command, shell=True))
+        rsync_output = str(subprocess.check_output(rsync_command, shell=False))
     except subprocess.CalledProcessError:
         logger.debug('Command failed, proceeding without estimating size: '
                      f'{rsync_command}')
@@ -2809,8 +2808,7 @@ def check_rsync_installed() -> None:
     """
     try:
         subprocess.run('rsync --version',
-                       shell=True,
-                       check=True,
+                       shell=False, check=True,
                        stdout=subprocess.PIPE,
                        stderr=subprocess.PIPE)
     except subprocess.CalledProcessError:

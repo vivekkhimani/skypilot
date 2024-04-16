@@ -389,7 +389,7 @@ def _fetch_image_id(region: str, ubuntu_version: str, creation_date: str,
                 --filters 'Name=name,Values="Deep Learning AMI GPU PyTorch {pytorch_version} (Ubuntu {ubuntu_version}) {creation_date}"' \\
                     'Name=state,Values=available' --query 'Images[:1].ImageId' --output text
             """,
-                                        shell=True)
+                                        shell=False)
     except subprocess.CalledProcessError as e:
         print(f'Failed {region}, {ubuntu_version}, {creation_date}. '
               'Trying next date.')

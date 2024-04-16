@@ -70,8 +70,7 @@ def get_regions() -> List[str]:
     proc = subprocess.run(
         'az account list-locations  --query "[?not_null(metadata.latitude)] '
         '.{RegionName:name , RegionDisplayName:regionalDisplayName}" -o json',
-        shell=True,
-        check=True,
+        shell=False, check=True,
         stdout=subprocess.PIPE)
     items = json.loads(proc.stdout.decode('utf-8'))
     regions = [
@@ -133,8 +132,7 @@ def get_sku_df(region_set: Set[str]) -> pd.DataFrame:
     # To get a complete list, --all option is necessary.
     proc = subprocess.run(
         'az vm list-skus --all --resource-type virtualMachines -o json',
-        shell=True,
-        check=True,
+        shell=False, check=True,
         stdout=subprocess.PIPE,
     )
     print('Done fetching SKUs')

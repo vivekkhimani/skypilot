@@ -350,7 +350,7 @@ def run_upload_cli(command: str, access_denied_message: str, bucket_name: str):
     with subprocess.Popen(command,
                           stderr=subprocess.PIPE,
                           stdout=subprocess.DEVNULL,
-                          shell=True) as process:
+                          shell=False) as process:
         stderr = []
         assert process.stderr is not None  # for mypy
         while True:
@@ -453,8 +453,7 @@ class Rclone():
         # Raise exception if rclone isn't installed
         try:
             subprocess.run('rclone version',
-                           shell=True,
-                           check=True,
+                           shell=False, check=True,
                            stdout=subprocess.PIPE)
         except subprocess.CalledProcessError:
             with ux_utils.print_exception_no_traceback():

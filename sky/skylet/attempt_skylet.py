@@ -15,21 +15,18 @@ def restart_skylet():
     subprocess.run(
         'ps aux | grep "sky.skylet.skylet" | grep "python3 -m"'
         '| awk \'{print $2}\' | xargs kill >> ~/.sky/skylet.log 2>&1',
-        shell=True,
-        check=False)
+        shell=False, check=False)
     subprocess.run(
         'nohup python3 -m sky.skylet.skylet'
         ' >> ~/.sky/skylet.log 2>&1 &',
-        shell=True,
-        check=True)
+        shell=False, check=True)
     with open(VERSION_FILE, 'w') as v_f:
         v_f.write(constants.SKYLET_VERSION)
 
 
 proc = subprocess.run(
     'ps aux | grep -v "grep" | grep "sky.skylet.skylet" | grep "python3 -m"',
-    shell=True,
-    check=False)
+    shell=False, check=False)
 
 running = (proc.returncode == 0)
 

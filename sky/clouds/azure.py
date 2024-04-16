@@ -39,8 +39,7 @@ _MAX_IDENTITY_FETCH_RETRY = 10
 
 def _run_output(cmd):
     proc = subprocess.run(cmd,
-                          shell=True,
-                          check=True,
+                          shell=False, check=True,
                           stderr=subprocess.PIPE,
                           stdout=subprocess.PIPE)
     return proc.stdout.decode('ascii')

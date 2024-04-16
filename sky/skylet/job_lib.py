@@ -163,7 +163,7 @@ class JobScheduler:
         _CURSOR.execute((f'UPDATE pending_jobs SET submit={int(time.time())} '
                          f'WHERE job_id={job_id!r}'))
         _CONN.commit()
-        subprocess.Popen(run_cmd, shell=True, stdout=subprocess.DEVNULL)
+        subprocess.Popen(run_cmd, shell=False, stdout=subprocess.DEVNULL)
 
     def schedule_step(self) -> None:
         job_owner = getpass.getuser()

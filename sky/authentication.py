@@ -193,8 +193,7 @@ def setup_gcp_authentication(config: Dict[str, Any]) -> Dict[str, Any]:
         # accurate way to figure out how this gcp user is meant to log in.
         proc = subprocess.run(
             'gcloud compute os-login describe-profile --format yaml',
-            shell=True,
-            stdout=subprocess.PIPE,
+            shell=False, stdout=subprocess.PIPE,
             check=False)
         os_login_username = None
         if proc.returncode == 0:
@@ -241,8 +240,7 @@ def setup_gcp_authentication(config: Dict[str, Any]) -> Dict[str, Any]:
             'gcloud compute os-login ssh-keys add '
             f'--key-file={public_key_path}',
             check=True,
-            shell=True,
-            stdout=subprocess.DEVNULL)
+            shell=False, stdout=subprocess.DEVNULL)
         # Enable ssh port for all the instances
         enable_ssh_cmd = ('gcloud compute firewall-rules create '
                           'allow-ssh-ingress-from-iap '
@@ -252,8 +250,7 @@ def setup_gcp_authentication(config: Dict[str, Any]) -> Dict[str, Any]:
                           '--source-ranges=0.0.0.0/0')
         proc = subprocess.run(enable_ssh_cmd,
                               check=False,
-                              shell=True,
-                              stdout=subprocess.DEVNULL,
+                              shell=False, stdout=subprocess.DEVNULL,
                               stderr=subprocess.PIPE)
         if proc.returncode != 0 and 'already exists' not in proc.stderr.decode(
                 'utf-8'):
@@ -404,7 +401,7 @@ def setup_kubernetes_authentication(config: Dict[str, Any]) -> Dict[str, Any]:
     cmd = f'kubectl create secret generic {key_label} ' \
           f'--from-file=ssh-publickey={public_key_path}'
     try:
-        subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+        subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=False)
     except subprocess.CalledProcessError as e:
         output = e.output.decode('utf-8')
         suffix = f'\nError message: {output}'

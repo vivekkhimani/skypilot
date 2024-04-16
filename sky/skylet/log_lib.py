@@ -169,10 +169,9 @@ def run_with_log(
     if use_sudo:
         # Sudo case is encountered when submitting
         # a job for Sky on-prem, when a non-admin user submits a job.
-        subprocess.run(f'sudo mkdir -p {dirname}', shell=True, check=True)
+        subprocess.run(f'sudo mkdir -p {dirname}', shell=False, check=True)
         subprocess.run(f'sudo touch {log_path}; sudo chmod a+rwx {log_path}',
-                       shell=True,
-                       check=True)
+                       shell=False, check=True)
         # Hack: Subprocess Popen does not accept sudo.
         # subprocess.Popen in local mode with shell=True does not work,
         # as it does not understand what -H means for sudo.
@@ -331,7 +330,7 @@ def run_bash_command_with_log(bash_command: str,
 
         subprocess_cmd: Union[str, List[str]]
         if use_sudo and job_owner is not None:
-            subprocess.run(f'chmod a+rwx {script_path}', shell=True, check=True)
+            subprocess.run(f'chmod a+rwx {script_path}', shell=False, check=True)
             subprocess_cmd = job_lib.make_job_command_with_user_switching(
                 job_owner, inner_command)
         else:

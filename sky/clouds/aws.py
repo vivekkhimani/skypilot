@@ -463,8 +463,7 @@ class AWS(clouds.Cloud):
 
         # Checks if the AWS CLI is installed properly
         proc = subprocess.run('aws --version',
-                              shell=True,
-                              check=False,
+                              shell=False, check=False,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE)
         if proc.returncode != 0:
@@ -534,8 +533,7 @@ class AWS(clouds.Cloud):
     @classmethod
     def _current_identity_type(cls) -> Optional[AWSIdentityType]:
         proc = subprocess.run('aws configure list',
-                              shell=True,
-                              check=False,
+                              shell=False, check=False,
                               stdout=subprocess.PIPE,
                               stderr=subprocess.PIPE)
         if proc.returncode != 0:

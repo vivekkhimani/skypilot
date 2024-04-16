@@ -100,8 +100,7 @@ _IMAGE_NOT_FOUND_UX_MESSAGE = (
 
 def _run_output(cmd):
     proc = subprocess.run(cmd,
-                          shell=True,
-                          check=True,
+                          shell=False, check=True,
                           stderr=subprocess.PIPE,
                           stdout=subprocess.PIPE)
     return proc.stdout.decode('ascii')
@@ -111,8 +110,7 @@ def is_api_disabled(endpoint: str, project_id: str) -> bool:
     proc = subprocess.run((f'gcloud services list --project {project_id} '
                            f' | grep {endpoint}.googleapis.com'),
                           check=False,
-                          shell=True,
-                          stderr=subprocess.PIPE,
+                          shell=False, stderr=subprocess.PIPE,
                           stdout=subprocess.PIPE)
     return proc.returncode != 0
 
@@ -673,8 +671,7 @@ class GCP(clouds.Cloud):
                     f'gcloud services enable {endpoint}.googleapis.com '
                     f'--project {project_id}',
                     check=False,
-                    shell=True,
-                    stdout=subprocess.PIPE,
+                    shell=False, stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT)
                 if proc.returncode == 0:
                     enabled_api = True
@@ -734,8 +731,7 @@ class GCP(clouds.Cloud):
         if (os.path.exists(os.path.expanduser(GCP_CONFIG_PATH)) and
                 os.path.getsize(os.path.expanduser(GCP_CONFIG_PATH)) > 0):
             subprocess.run(f'cp {GCP_CONFIG_PATH} {GCP_CONFIG_SKY_BACKUP_PATH}',
-                           shell=True,
-                           check=True)
+                           shell=False, check=True)
         elif not os.path.exists(os.path.expanduser(GCP_CONFIG_SKY_BACKUP_PATH)):
             raise RuntimeError(
                 'GCP credential file is empty. Please make sure you '

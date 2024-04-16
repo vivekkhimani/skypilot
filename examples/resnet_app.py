@@ -9,9 +9,8 @@ workdir = '~/Downloads/tpu'
 subprocess.run(
     'git clone https://github.com/concretevitamin/tpu '
     f'{workdir} || true',
-    shell=True,
-    check=True)
-subprocess.run(f'cd {workdir} && git checkout 9459fee', shell=True, check=True)
+    shell=False, check=True)
+subprocess.run(f'cd {workdir} && git checkout 9459fee', shell=False, check=True)
 
 # The setup command.  Will be run under the working directory.
 setup = """\

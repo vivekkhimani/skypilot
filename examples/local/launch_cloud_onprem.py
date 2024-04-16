@@ -88,7 +88,7 @@ cluster_yaml_config = {
 with tempfile.NamedTemporaryFile(suffix='.yaml', mode='w') as f:
     yaml.dump(cluster_yaml_config, f)
     file_path = f.name
-    subprocess.run(f'sky admin deploy {file_path}', shell=True, check=True)
+    subprocess.run(f'sky admin deploy {file_path}', shell=False, check=True)
 
 # Fill out the local config file in ~/.sky/local/...
 local_config = onprem_utils.get_local_cluster_config_or_error(
