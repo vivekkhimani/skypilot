@@ -8,7 +8,6 @@ import inspect
 import json
 import os
 import platform
-import random
 import re
 import socket
 import sys
@@ -24,6 +23,7 @@ from sky import sky_logging
 from sky.skylet import constants
 from sky.utils import ux_utils
 from sky.utils import validator
+import secrets
 
 _USER_HASH_FILE = os.path.expanduser('~/.sky/user_hash')
 USER_HASH_LENGTH = 8
@@ -198,7 +198,7 @@ class Backoff:
         else:
             self._backoff = min(self._backoff * self.MULTIPLIER,
                                 self._max_backoff)
-        self._backoff += random.uniform(-self.JITTER * self._backoff,
+        self._backoff += secrets.SystemRandom().uniform(-self.JITTER * self._backoff,
                                         self.JITTER * self._backoff)
         return self._backoff
 

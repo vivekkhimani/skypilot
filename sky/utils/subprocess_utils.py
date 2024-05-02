@@ -1,6 +1,5 @@
 """Utility functions for subprocesses."""
 from multiprocessing import pool
-import random
 import subprocess
 import time
 from typing import Any, Callable, List, Optional, Tuple, Union
@@ -13,6 +12,7 @@ from sky import sky_logging
 from sky.skylet import log_lib
 from sky.utils import timeline
 from sky.utils import ux_utils
+import secrets
 
 logger = sky_logging.init_logger(__name__)
 
@@ -157,7 +157,7 @@ def run_with_retries(
             if (retry_returncode is not None and
                     returncode in retry_returncode):
                 retry_cnt += 1
-                time.sleep(random.uniform(0, 1) * 2)
+                time.sleep(secrets.SystemRandom().uniform(0, 1) * 2)
                 continue
 
             if retry_stderrs is None:
@@ -167,7 +167,7 @@ def run_with_retries(
             for retry_err in retry_stderrs:
                 if retry_err in stderr:
                     retry_cnt += 1
-                    time.sleep(random.uniform(0, 1) * 2)
+                    time.sleep(secrets.SystemRandom().uniform(0, 1) * 2)
                     need_retry = True
                     break
             if need_retry:

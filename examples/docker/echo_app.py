@@ -7,10 +7,10 @@
 # Usage:
 #   python echo_app.py
 
-import random
 import string
 
 import sky
+import secrets
 
 with sky.Dag() as dag:
     # The setup command to build the container image
@@ -33,7 +33,7 @@ with sky.Dag() as dag:
     })
 
     # Configure outputs for the task - we'll write to a bucket using Sky Storage
-    output_bucket_name = ''.join(random.choices(string.ascii_lowercase, k=15))
+    output_bucket_name = ''.join(secrets.SystemRandom().choices(string.ascii_lowercase, k=15))
     output_storage = sky.Storage(name=output_bucket_name,
                                  mode=sky.StorageMode.MOUNT)
     echo_app.set_storage_mounts({

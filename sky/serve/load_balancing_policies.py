@@ -1,9 +1,9 @@
 """LoadBalancingPolicy: Policy to select endpoint."""
-import random
 import typing
 from typing import List, Optional
 
 from sky import sky_logging
+import secrets
 
 if typing.TYPE_CHECKING:
     import fastapi
@@ -38,7 +38,7 @@ class RoundRobinPolicy(LoadBalancingPolicy):
             # If the autoscaler keeps scaling up and down the replicas,
             # we need this shuffle to not let the first replica have the
             # most of the load.
-            random.shuffle(ready_replicas)
+            secrets.SystemRandom().shuffle(ready_replicas)
             self.ready_replicas = ready_replicas
             self.index = 0
 
