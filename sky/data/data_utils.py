@@ -19,6 +19,7 @@ from sky.adaptors import cloudflare
 from sky.adaptors import gcp
 from sky.adaptors import ibm
 from sky.utils import ux_utils
+from security import safe_command
 
 Client = Any
 
@@ -347,7 +348,7 @@ def get_gsutil_command() -> Tuple[str, str]:
 def run_upload_cli(command: str, access_denied_message: str, bucket_name: str):
     # TODO(zhwu): Use log_lib.run_with_log() and redirect the output
     # to a log file.
-    with subprocess.Popen(command,
+    with safe_command.run(subprocess.Popen, command,
                           stderr=subprocess.PIPE,
                           stdout=subprocess.DEVNULL,
                           shell=True) as process:

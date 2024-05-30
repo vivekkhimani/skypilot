@@ -21,6 +21,7 @@ from sky.spot import spot_utils
 from sky.utils import cluster_yaml_utils
 from sky.utils import common_utils
 from sky.utils import ux_utils
+from security import safe_command
 
 # Seconds of sleep between the processing of skylet events.
 EVENT_CHECKING_INTERVAL_SECONDS = 20
@@ -192,7 +193,7 @@ class AutostopEvent(SkyletEvent):
                 # Passing env inherited from os.environ is technically not
                 # needed, because we call `python <script>` rather than `ray
                 # <cmd>`. We just need the {RAY_USAGE_STATS_ENABLED: 0} part.
-                subprocess.run([sys.executable, script], check=True, env=env)
+                safe_command.run(subprocess.run, [sys.executable, script], check=True, env=env)
 
                 logger.info('Running ray down.')
                 # Stop the workers first to avoid orphan workers.

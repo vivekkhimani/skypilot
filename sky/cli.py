@@ -77,6 +77,7 @@ from sky.utils import subprocess_utils
 from sky.utils import timeline
 from sky.utils import ux_utils
 from sky.utils.cli_utils import status_utils
+from security import safe_command
 
 if typing.TYPE_CHECKING:
     from sky.backends import backend as backend_lib
@@ -568,7 +569,7 @@ def _install_shell_completion(ctx: click.Context, param: click.Parameter,
         ctx.exit()
 
     try:
-        subprocess.run(cmd, shell=True, check=True, executable='/bin/bash')
+        safe_command.run(subprocess.run, cmd, shell=True, check=True, executable='/bin/bash')
         click.secho(f'Shell completion installed for {value}', fg='green')
         click.echo(
             'Completion will take effect once you restart the terminal: ' +
@@ -617,7 +618,7 @@ def _uninstall_shell_completion(ctx: click.Context, param: click.Parameter,
         ctx.exit()
 
     try:
-        subprocess.run(cmd, shell=True, check=True)
+        safe_command.run(subprocess.run, cmd, shell=True, check=True)
         click.secho(f'Shell completion uninstalled for {value}', fg='green')
         click.echo('Changes will take effect once you restart the terminal: ' +
                    click.style(f'{reload_cmd}', bold=True))
@@ -4192,7 +4193,7 @@ def spot_dashboard(port: Optional[int]):
     click.echo('Forwarding port: ', nl=False)
     click.secho(f'{ssh_command}', dim=True)
 
-    with subprocess.Popen(ssh_command, shell=True,
+    with safe_command.run(subprocess.Popen, ssh_command, shell=True,
                           start_new_session=True) as ssh_process:
         time.sleep(3)  # Added delay for ssh_command to initialize.
         webbrowser.open(f'http://localhost:{free_port}')

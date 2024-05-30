@@ -13,6 +13,7 @@ from sky import sky_logging
 from sky.skylet import log_lib
 from sky.utils import timeline
 from sky.utils import ux_utils
+from security import safe_command
 
 logger = sky_logging.init_logger(__name__)
 
@@ -27,7 +28,7 @@ def run(cmd, **kwargs):
     executable = kwargs.pop('executable', '/bin/bash')
     if not shell:
         executable = None
-    return subprocess.run(cmd,
+    return safe_command.run(subprocess.run, cmd,
                           shell=shell,
                           check=check,
                           executable=executable,

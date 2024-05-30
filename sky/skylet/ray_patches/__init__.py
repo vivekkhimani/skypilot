@@ -30,6 +30,7 @@ import subprocess
 import pkg_resources
 
 from sky.skylet import constants
+from security import safe_command
 
 
 def _to_absolute(pwd_file):
@@ -52,7 +53,7 @@ def _run_patch(target_file,
     # It is ok to patch again from the original file.
     patch {orig_file} -i {patch_file} -o {target_file}
     """
-    subprocess.run(script, shell=True, check=True)
+    safe_command.run(subprocess.run, script, shell=True, check=True)
 
 
 def patch() -> None:

@@ -47,6 +47,7 @@ from sky.utils import kubernetes_enums
 from sky.utils import kubernetes_utils
 from sky.utils import subprocess_utils
 from sky.utils import ux_utils
+from security import safe_command
 
 logger = sky_logging.init_logger(__name__)
 
@@ -237,8 +238,7 @@ def setup_gcp_authentication(config: Dict[str, Any]) -> Dict[str, Any]:
         config['auth']['ssh_user'] = os_login_username
 
         # Add ssh key to GCP with oslogin
-        subprocess.run(
-            'gcloud compute os-login ssh-keys add '
+        safe_command.run(subprocess.run, 'gcloud compute os-login ssh-keys add '
             f'--key-file={public_key_path}',
             check=True,
             shell=True,

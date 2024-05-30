@@ -16,6 +16,7 @@ from sky.adaptors import ibm
 from sky.clouds import gcp
 from sky.data import data_utils
 from sky.data.data_utils import Rclone
+from security import safe_command
 
 
 class CloudStorage:
@@ -113,7 +114,7 @@ class GcsCloudStorage(CloudStorage):
         commands = [self._INSTALL_GSUTIL]
         commands.append(f'{self._gsutil_command} ls -d {url}')
         command = ' && '.join(commands)
-        p = subprocess.run(command,
+        p = safe_command.run(subprocess.run, command,
                            stdout=subprocess.PIPE,
                            shell=True,
                            check=True,

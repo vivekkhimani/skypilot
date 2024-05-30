@@ -11,6 +11,7 @@ import yaml
 
 import sky
 from sky.utils import rich_utils
+from security import safe_command
 
 
 def prerequisite_check() -> Tuple[bool, str]:
@@ -47,7 +48,7 @@ def cleanup() -> Tuple[bool, str]:
     with rich_utils.safe_status('Cleaning up existing GPU labeling '
                                 'resources'):
         try:
-            subprocess.run(del_command.split(), check=True, capture_output=True)
+            safe_command.run(subprocess.run, del_command.split(), check=True, capture_output=True)
             success = True
         except subprocess.CalledProcessError as e:
             output = e.output.decode('utf-8')
