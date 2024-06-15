@@ -16,6 +16,7 @@ from sky.clouds import cloud_registry
 from sky.clouds.service_catalog import constants
 from sky.utils import rich_utils
 from sky.utils import ux_utils
+from security import safe_requests
 
 logger = sky_logging.init_logger(__name__)
 
@@ -108,7 +109,7 @@ def read_catalog(filename: str,
                                          f'{filename}'
                                          f'{update_frequency_str}')):
                 try:
-                    r = requests.get(url)
+                    r = safe_requests.get(url)
                     r.raise_for_status()
                 except requests.exceptions.RequestException as e:
                     error_str = (f'Failed to fetch {cloud} catalog '

@@ -30,6 +30,7 @@ from sky.usage import usage_lib
 from sky.utils import common_utils
 from sky.utils import controller_utils
 from sky.utils import ux_utils
+from security import safe_requests
 
 if typing.TYPE_CHECKING:
     from sky.serve import service_spec
@@ -407,8 +408,7 @@ class ReplicaInfo:
                     timeout=serve_constants.READINESS_PROBE_TIMEOUT_SECONDS)
             else:
                 msg += 'GET'
-                response = requests.get(
-                    readiness_path,
+                response = safe_requests.get(readiness_path,
                     timeout=serve_constants.READINESS_PROBE_TIMEOUT_SECONDS)
             msg += (f' request to {replica_identity} returned status '
                     f'code {response.status_code}')

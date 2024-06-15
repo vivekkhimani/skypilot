@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import requests
 
 from sky.utils import common_utils
+from security import safe_requests
 
 CREDENTIALS_PATH = '~/.lambda_cloud/lambda_keys'
 API_ENDPOINT = 'https://cloud.lambdalabs.com/api/v1'
@@ -103,7 +104,7 @@ def _try_request_with_backoff(method: str,
                                    max_backoff_factor=MAX_BACKOFF_FACTOR)
     for i in range(MAX_ATTEMPTS):
         if method == 'get':
-            response = requests.get(url, headers=headers)
+            response = safe_requests.get(url, headers=headers)
         elif method == 'post':
             response = requests.post(url, headers=headers, data=data)
         else:
