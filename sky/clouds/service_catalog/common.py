@@ -108,7 +108,7 @@ def read_catalog(filename: str,
                                          f'{filename}'
                                          f'{update_frequency_str}')):
                 try:
-                    r = requests.get(url)
+                    r = requests.get(url, timeout=60)
                     r.raise_for_status()
                 except requests.exceptions.RequestException as e:
                     error_str = (f'Failed to fetch {cloud} catalog '

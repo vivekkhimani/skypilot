@@ -103,9 +103,9 @@ def _try_request_with_backoff(method: str,
                                    max_backoff_factor=MAX_BACKOFF_FACTOR)
     for i in range(MAX_ATTEMPTS):
         if method == 'get':
-            response = requests.get(url, headers=headers)
+            response = requests.get(url, headers=headers, timeout=60)
         elif method == 'post':
-            response = requests.post(url, headers=headers, data=data)
+            response = requests.post(url, headers=headers, data=data, timeout=60)
         else:
             raise ValueError(f'Unsupported requests method: {method}')
         # If rate limited, wait and try again

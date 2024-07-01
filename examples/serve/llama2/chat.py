@@ -35,7 +35,7 @@ try:
                                  data=json.dumps({
                                      'model': model,
                                      'messages': history
-                                 }))
+                                 }), timeout=60)
             msg = resp.json()['choices'][0]['message']
             print('[Chatbot]' + msg['content'])
             history.append(msg)
