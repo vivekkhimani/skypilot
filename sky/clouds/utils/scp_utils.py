@@ -187,7 +187,7 @@ class SCPClient:
         self.set_timestamp()
         self.set_signature(url=url, method=method)
 
-        response = requests.get(url, headers=self.headers)
+        response = requests.get(url, headers=self.headers, timeout=60)
         raise_scp_error(response)
         if contents_key is not None:
             return response.json().get(contents_key, [])
@@ -200,7 +200,7 @@ class SCPClient:
         self.set_timestamp()
         self.set_signature(url=url, method=method)
 
-        response = requests.post(url, json=request_body, headers=self.headers)
+        response = requests.post(url, json=request_body, headers=self.headers, timeout=60)
 
         raise_scp_error(response)
         return response.json()
@@ -213,10 +213,10 @@ class SCPClient:
         if request_body:
             response = requests.delete(url,
                                        json=request_body,
-                                       headers=self.headers)
+                                       headers=self.headers, timeout=60)
 
         else:
-            response = requests.delete(url, headers=self.headers)
+            response = requests.delete(url, headers=self.headers, timeout=60)
         raise_scp_error(response)
         return response.json()
 
@@ -320,7 +320,7 @@ class SCPClient:
     def list_catalog(self) -> Dict[str, Any]:
         """List offered instances and their availability."""
         response = requests.get(f'{API_ENDPOINT}/instance-types',
-                                headers=self.headers)
+                                headers=self.headers, timeout=60)
         raise_scp_error(response)
         return response.json().get('data', [])
 
