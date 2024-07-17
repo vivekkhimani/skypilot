@@ -1827,8 +1827,7 @@ class GcsStore(AbstractStore):
                                       f'rm -r gs://{bucket_name}')
                 subprocess.check_output(remove_obj_command,
                                         stderr=subprocess.STDOUT,
-                                        shell=True,
-                                        executable='/bin/bash')
+                                        shell=False, executable='/bin/bash')
                 return True
             except subprocess.CalledProcessError as e:
                 logger.error(e.output)
@@ -2192,7 +2191,7 @@ class R2Store(AbstractStore):
                     f'[bold cyan]Deleting R2 bucket {bucket_name}[/]'):
                 subprocess.check_output(remove_command,
                                         stderr=subprocess.STDOUT,
-                                        shell=True)
+                                        shell=False)
         except subprocess.CalledProcessError as e:
             if 'NoSuchBucket' in e.output.decode('utf-8'):
                 logger.debug(
