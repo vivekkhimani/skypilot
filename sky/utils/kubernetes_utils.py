@@ -18,6 +18,7 @@ from sky.utils import common_utils
 from sky.utils import env_options
 from sky.utils import kubernetes_enums
 from sky.utils import ux_utils
+from security import safe_command
 
 DEFAULT_NAMESPACE = 'default'
 
@@ -1016,7 +1017,7 @@ def check_port_forward_mode_dependencies() -> None:
                        ['nc', ['nc', '-h'], 'netcat']]
     for name, check_cmd, install_cmd in dependency_list:
         try:
-            subprocess.run(check_cmd,
+            safe_command.run(subprocess.run, check_cmd,
                            stdout=subprocess.DEVNULL,
                            stderr=subprocess.DEVNULL,
                            check=True)

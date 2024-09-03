@@ -22,6 +22,7 @@ from sky.skylet import constants
 from sky.utils import common_utils
 from sky.utils import db_utils
 from sky.utils import log_utils
+from security import safe_command
 
 if typing.TYPE_CHECKING:
     from ray.dashboard.modules.job import pydantic_models as ray_pydantic
@@ -163,7 +164,7 @@ class JobScheduler:
         _CURSOR.execute((f'UPDATE pending_jobs SET submit={int(time.time())} '
                          f'WHERE job_id={job_id!r}'))
         _CONN.commit()
-        subprocess.Popen(run_cmd, shell=True, stdout=subprocess.DEVNULL)
+        safe_command.run(subprocess.Popen, run_cmd, shell=True, stdout=subprocess.DEVNULL)
 
     def schedule_step(self) -> None:
         job_owner = getpass.getuser()

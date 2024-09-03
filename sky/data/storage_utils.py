@@ -10,6 +10,7 @@ from sky import exceptions
 from sky import sky_logging
 from sky.utils import log_utils
 from sky.utils.cli_utils import status_utils
+from security import safe_command
 
 logger = sky_logging.init_logger(__name__)
 
@@ -91,7 +92,7 @@ def get_excluded_files_from_gitignore(src_dir_path: str) -> List[str]:
 
     if git_exclude_exists or gitignore_exists:
         try:
-            output = subprocess.run(filter_cmd,
+            output = safe_command.run(subprocess.run, filter_cmd,
                                     shell=True,
                                     stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE,
@@ -112,12 +113,12 @@ def get_excluded_files_from_gitignore(src_dir_path: str) -> List[str]:
                         return excluded_list
                     init_cmd = f'git -C {expand_src_dir_path} init'
                     try:
-                        subprocess.run(init_cmd,
+                        safe_command.run(subprocess.run, init_cmd,
                                        shell=True,
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE,
                                        check=True)
-                        output = subprocess.run(filter_cmd,
+                        output = safe_command.run(subprocess.run, filter_cmd,
                                                 shell=True,
                                                 stdout=subprocess.PIPE,
                                                 stderr=subprocess.PIPE,
@@ -138,12 +139,12 @@ def get_excluded_files_from_gitignore(src_dir_path: str) -> List[str]:
                         remove_dirs_cmd = (f'find {expand_src_dir_path}' \
                                         f'/.git -path {git_exclude_path}' \
                                         ' -o -type d -empty -delete')
-                        subprocess.run(remove_files_cmd,
+                        safe_command.run(subprocess.run, remove_files_cmd,
                                        shell=True,
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE,
                                        check=True)
-                        subprocess.run(remove_dirs_cmd,
+                        safe_command.run(subprocess.run, remove_dirs_cmd,
                                        shell=True,
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE,

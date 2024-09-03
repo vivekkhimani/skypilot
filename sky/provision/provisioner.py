@@ -27,6 +27,7 @@ from sky.utils import command_runner
 from sky.utils import common_utils
 from sky.utils import rich_utils
 from sky.utils import ux_utils
+from security import safe_command
 
 # Do not use __name__ as we do not want to propagate logs to sky.provision,
 # which will be customized in sky.provision.logging.
@@ -276,7 +277,7 @@ def _wait_ssh_connection_indirect(
     del ssh_control_name
     command = _ssh_probe_command(ip, ssh_user, ssh_private_key,
                                  ssh_proxy_command)
-    proc = subprocess.run(command,
+    proc = safe_command.run(subprocess.run, command,
                           shell=False,
                           check=False,
                           stdout=subprocess.DEVNULL,

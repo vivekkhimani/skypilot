@@ -30,6 +30,7 @@ from sky import cli
 from sky import global_user_state
 from sky.backends import onprem_utils
 from sky.utils import common_utils
+from security import safe_command
 
 parser = argparse.ArgumentParser()
 parser.add_argument('name',
@@ -88,7 +89,7 @@ cluster_yaml_config = {
 with tempfile.NamedTemporaryFile(suffix='.yaml', mode='w') as f:
     yaml.dump(cluster_yaml_config, f)
     file_path = f.name
-    subprocess.run(f'sky admin deploy {file_path}', shell=True, check=True)
+    safe_command.run(subprocess.run, f'sky admin deploy {file_path}', shell=True, check=True)
 
 # Fill out the local config file in ~/.sky/local/...
 local_config = onprem_utils.get_local_cluster_config_or_error(
