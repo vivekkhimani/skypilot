@@ -11,8 +11,7 @@ import argparse
 import csv
 import json
 import os
-
-import requests
+from security import safe_requests
 
 ENDPOINT = 'https://cloud.lambdalabs.com/api/v1/instance-types'
 DEFAULT_LAMBDA_KEYS_PATH = os.path.expanduser('~/.lambda_cloud/lambda_keys')
@@ -59,7 +58,7 @@ def name_to_gpu_cnt(name: str) -> int:
 
 def create_catalog(api_key: str, output_path: str) -> None:
     headers = {'Authorization': f'Bearer {api_key}'}
-    response = requests.get(ENDPOINT, headers=headers)
+    response = safe_requests.get(ENDPOINT, headers=headers)
     info = response.json()['data']
 
     with open(output_path, mode='w') as f:
