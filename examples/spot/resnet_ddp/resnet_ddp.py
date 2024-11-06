@@ -1,6 +1,5 @@
 import argparse
 import os
-import random
 
 import numpy as np
 import torch
@@ -11,6 +10,7 @@ from torch.utils.data.distributed import DistributedSampler
 import torchvision
 import torchvision.transforms as transforms
 import wandb
+import secrets
 
 
 def set_random_seeds(random_seed=0):
@@ -19,7 +19,7 @@ def set_random_seeds(random_seed=0):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
     np.random.seed(random_seed)
-    random.seed(random_seed)
+    secrets.SystemRandom().seed(random_seed)
 
 
 def evaluate(model, device, test_loader):

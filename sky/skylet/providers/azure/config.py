@@ -1,6 +1,5 @@
 import json
 import logging
-import random
 from hashlib import sha256
 from pathlib import Path
 import time
@@ -13,6 +12,7 @@ from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.resource.resources.models import DeploymentMode
 
 from sky.utils import common_utils
+import secrets
 
 UNIQUE_ID_LEN = 4
 _WAIT_NSG_CREATION_NUM_TIMEOUT_SECONDS = 600
@@ -102,8 +102,8 @@ def _configure_resource_group(config):
     subnet_mask = config["provider"].get("subnet_mask")
     if subnet_mask is None:
         # choose a random subnet, skipping most common value of 0
-        random.seed(unique_id)
-        subnet_mask = "10.{}.0.0/16".format(random.randint(1, 254))
+        secrets.SystemRandom().seed(unique_id)
+        subnet_mask = "10.{}.0.0/16".format(secrets.SystemRandom().randint(1, 254))
     logger.info("Using subnet mask: %s", subnet_mask)
 
     parameters = {
