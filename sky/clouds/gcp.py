@@ -19,6 +19,7 @@ from sky.clouds.utils import gcp_utils
 from sky.utils import common_utils
 from sky.utils import subprocess_utils
 from sky.utils import ux_utils
+from security import safe_command
 
 if typing.TYPE_CHECKING:
     from sky import resources
@@ -99,7 +100,7 @@ _IMAGE_NOT_FOUND_UX_MESSAGE = (
 
 
 def _run_output(cmd):
-    proc = subprocess.run(cmd,
+    proc = safe_command.run(subprocess.run, cmd,
                           shell=True,
                           check=True,
                           stderr=subprocess.PIPE,
@@ -108,7 +109,7 @@ def _run_output(cmd):
 
 
 def is_api_disabled(endpoint: str, project_id: str) -> bool:
-    proc = subprocess.run((f'gcloud services list --project {project_id} '
+    proc = safe_command.run(subprocess.run, (f'gcloud services list --project {project_id} '
                            f' | grep {endpoint}.googleapis.com'),
                           check=False,
                           shell=True,
@@ -669,8 +670,7 @@ class GCP(clouds.Cloud):
                     suffix = ' (free of charge)'
                 print(f'\nEnabling {display_name} API{suffix}...')
                 t1 = time.time()
-                proc = subprocess.run(
-                    f'gcloud services enable {endpoint}.googleapis.com '
+                proc = safe_command.run(subprocess.run, f'gcloud services enable {endpoint}.googleapis.com '
                     f'--project {project_id}',
                     check=False,
                     shell=True,
