@@ -12,7 +12,7 @@ import urllib
 
 import numpy as np
 import pandas as pd
-import requests
+from security import safe_requests
 
 US_REGIONS = {
     'centralus',
@@ -112,7 +112,7 @@ def get_pricing_df(region: Optional[str] = None) -> pd.DataFrame:
         page += 1
         if page % 10 == 0:
             print(f'Fetched pricing pages {page}')
-        r = requests.get(url)
+        r = safe_requests.get(url)
         r.raise_for_status()
         content_str = r.content.decode('ascii')
         content = json.loads(content_str)

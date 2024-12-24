@@ -15,6 +15,7 @@ import requests
 
 from sky.adaptors import ibm
 from sky.skylet.providers.ibm.utils import RAY_RECYCLABLE, get_logger
+from security import safe_requests
 
 # pylint: disable=line-too-long
 logger = get_logger("vpc_provider_")
@@ -706,7 +707,7 @@ class ClusterCleaner:
             :param offset - offset from the beginning of the list of results attained from the GET request,
                             which may contain up to 200 namespaces per http response"""
 
-            res = requests.get(
+            res = safe_requests.get(
                 f"{self.cf_namespaces_url}?limit=200&offset={offset}",
                 headers=self.get_headers(),
             )
@@ -776,7 +777,7 @@ class ClusterCleaner:
         :param offset - offset from the beginning of the list of results attained from the GET request,
                         which may contain up to 200 namespaces per http response"""
 
-        res = requests.get(
+        res = safe_requests.get(
             f"{self.cf_namespaces_url}/{namespace_id}/actions?limit=200",
             headers=self.get_headers(),
         )
