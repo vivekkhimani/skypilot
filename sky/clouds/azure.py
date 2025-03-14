@@ -20,6 +20,7 @@ from sky.clouds import service_catalog
 from sky.skylet import log_lib
 from sky.utils import common_utils
 from sky.utils import ux_utils
+from security import safe_command
 
 if typing.TYPE_CHECKING:
     from sky import resources
@@ -38,7 +39,7 @@ _MAX_IDENTITY_FETCH_RETRY = 10
 
 
 def _run_output(cmd):
-    proc = subprocess.run(cmd,
+    proc = safe_command.run(subprocess.run, cmd,
                           shell=True,
                           check=True,
                           stderr=subprocess.PIPE,

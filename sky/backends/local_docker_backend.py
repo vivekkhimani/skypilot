@@ -14,6 +14,7 @@ from sky.backends import backend_utils
 from sky.backends import docker_utils
 from sky.data import storage as storage_lib
 from sky.utils import rich_utils
+from security import safe_command
 
 if typing.TYPE_CHECKING:
     from sky import resources
@@ -378,7 +379,7 @@ class LocalDockerBackend(backends.Backend['LocalDockerResourceHandle']):
             script_path = temp_file.name
             cmd = f'chmod +x {script_path} && docker cp {script_path} ' \
                   f'{container.name}:/sky/{docker_utils.SKY_DOCKER_RUN_SCRIPT}'
-            subprocess.run(cmd, shell=True, check=True)
+            safe_command.run(subprocess.run, cmd, shell=True, check=True)
 
         _, exec_log = container.exec_run(
             cmd=f'/bin/bash -c "./sky/{docker_utils.SKY_DOCKER_RUN_SCRIPT}"',
