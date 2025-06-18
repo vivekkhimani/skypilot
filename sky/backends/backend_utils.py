@@ -52,6 +52,7 @@ from sky.utils import rich_utils
 from sky.utils import subprocess_utils
 from sky.utils import timeline
 from sky.utils import ux_utils
+from security import safe_command
 
 if typing.TYPE_CHECKING:
     from sky import resources
@@ -271,8 +272,7 @@ def _optimize_file_mounts(yaml_path: str) -> None:
         full_local_src = str(pathlib.Path(local_src).expanduser())
         unique_name = local_source_to_unique_name[local_src]
         # !r to add quotes for paths containing spaces.
-        subprocess.run(
-            f'cp -r {full_local_src!r} {local_runtime_files_dir}/{unique_name}',
+        safe_command.run(subprocess.run, f'cp -r {full_local_src!r} {local_runtime_files_dir}/{unique_name}',
             shell=True,
             check=True)
 

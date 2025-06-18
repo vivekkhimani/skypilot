@@ -29,6 +29,7 @@ from sky.adaptors import gcp
 from sky.data import data_utils
 from sky.utils import rich_utils
 from sky.utils import ux_utils
+from security import safe_command
 
 logger = sky_logging.init_logger(__name__)
 
@@ -145,7 +146,7 @@ def gcs_to_s3(gs_bucket_name: str, s3_bucket_name: str) -> None:
     gsutil_alias, alias_gen = data_utils.get_gsutil_command()
     sync_command = (f'{alias_gen}; {gsutil_alias} '
                     f'rsync -rd gs://{gs_bucket_name} s3://{s3_bucket_name}')
-    subprocess.call(sync_command, shell=True)
+    safe_command.run(subprocess.call, sync_command, shell=True)
 
 
 def gcs_to_r2(gs_bucket_name: str, r2_bucket_name: str) -> None:
