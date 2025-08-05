@@ -568,7 +568,7 @@ def _install_shell_completion(ctx: click.Context, param: click.Parameter,
         ctx.exit()
 
     try:
-        subprocess.run(cmd, shell=True, check=True, executable='/bin/bash')
+        subprocess.run(cmd, shell=False, check=True, executable='/bin/bash')
         click.secho(f'Shell completion installed for {value}', fg='green')
         click.echo(
             'Completion will take effect once you restart the terminal: ' +
@@ -617,7 +617,7 @@ def _uninstall_shell_completion(ctx: click.Context, param: click.Parameter,
         ctx.exit()
 
     try:
-        subprocess.run(cmd, shell=True, check=True)
+        subprocess.run(cmd, shell=False, check=True)
         click.secho(f'Shell completion uninstalled for {value}', fg='green')
         click.echo('Changes will take effect once you restart the terminal: ' +
                    click.style(f'{reload_cmd}', bold=True))
@@ -4192,8 +4192,7 @@ def spot_dashboard(port: Optional[int]):
     click.echo('Forwarding port: ', nl=False)
     click.secho(f'{ssh_command}', dim=True)
 
-    with subprocess.Popen(ssh_command, shell=True,
-                          start_new_session=True) as ssh_process:
+    with subprocess.Popen(ssh_command, shell=False, start_new_session=True) as ssh_process:
         time.sleep(3)  # Added delay for ssh_command to initialize.
         webbrowser.open(f'http://localhost:{free_port}')
         click.secho(

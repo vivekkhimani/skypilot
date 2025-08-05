@@ -115,8 +115,7 @@ class GcsCloudStorage(CloudStorage):
         command = ' && '.join(commands)
         p = subprocess.run(command,
                            stdout=subprocess.PIPE,
-                           shell=True,
-                           check=True,
+                           shell=False, check=True,
                            executable='/bin/bash')
         out = p.stdout.decode().strip()
         # Edge Case: Gcloud command is run for first time #437

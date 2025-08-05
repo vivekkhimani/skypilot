@@ -145,7 +145,7 @@ def gcs_to_s3(gs_bucket_name: str, s3_bucket_name: str) -> None:
     gsutil_alias, alias_gen = data_utils.get_gsutil_command()
     sync_command = (f'{alias_gen}; {gsutil_alias} '
                     f'rsync -rd gs://{gs_bucket_name} s3://{s3_bucket_name}')
-    subprocess.call(sync_command, shell=True)
+    subprocess.call(sync_command, shell=False)
 
 
 def gcs_to_r2(gs_bucket_name: str, r2_bucket_name: str) -> None:
