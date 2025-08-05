@@ -301,7 +301,7 @@ def path_size_megabytes(path: str) -> int:
                      f'{git_exclude_filter} --dry-run {path!r}')
     rsync_output = ''
     try:
-        rsync_output = str(subprocess.check_output(rsync_command, shell=True))
+        rsync_output = str(subprocess.check_output(rsync_command, shell=False))
     except subprocess.CalledProcessError:
         logger.debug('Command failed, proceeding without estimating size: '
                      f'{rsync_command}')

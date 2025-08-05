@@ -252,8 +252,7 @@ def setup_gcp_authentication(config: Dict[str, Any]) -> Dict[str, Any]:
                           '--source-ranges=0.0.0.0/0')
         proc = subprocess.run(enable_ssh_cmd,
                               check=False,
-                              shell=True,
-                              stdout=subprocess.DEVNULL,
+                              shell=False, stdout=subprocess.DEVNULL,
                               stderr=subprocess.PIPE)
         if proc.returncode != 0 and 'already exists' not in proc.stderr.decode(
                 'utf-8'):
@@ -404,7 +403,7 @@ def setup_kubernetes_authentication(config: Dict[str, Any]) -> Dict[str, Any]:
     cmd = f'kubectl create secret generic {key_label} ' \
           f'--from-file=ssh-publickey={public_key_path}'
     try:
-        subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+        subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=False)
     except subprocess.CalledProcessError as e:
         output = e.output.decode('utf-8')
         suffix = f'\nError message: {output}'
